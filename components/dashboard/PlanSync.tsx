@@ -11,7 +11,13 @@ export function PlanSync() {
   useEffect(() => {
     if (searchParams.get("upgraded") !== "true") return;
 
-    fetch("/api/stripe/sync-plan", { method: "POST" })
+    const sessionId = searchParams.get("session_id");
+
+    fetch("/api/stripe/sync-plan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId }),
+    })
       .then((r) => r.json())
       .then((d) => {
         if (d.plan && d.plan !== "free") {

@@ -4,9 +4,22 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 function extraireJSON<T>(text: string, fallback: T): T {
-  const match = text.match(/\{[\s\S]*\}/);
-  if (!match) return fallback;
-  try { return JSON.parse(match[0]) as T; } catch { return fallback; }
+  // Supprimer les blocs markdown éventuels
+  const clean = text.replace(/```(?:json|JSON)?\s*\n?/g, "").replace(/```/g, "").trim();
+  // Essai direct
+  try { return JSON.parse(clean) as T; } catch {}
+  // Extraction par profondeur d'accolades
+  let depth = 0, start = -1;
+  for (let i = 0; i < clean.length; i++) {
+    if (clean[i] === "{") { if (depth === 0) start = i; depth++; }
+    else if (clean[i] === "}") {
+      depth--;
+      if (depth === 0 && start !== -1) {
+        try { return JSON.parse(clean.slice(start, i + 1)) as T; } catch {}
+      }
+    }
+  }
+  return fallback;
 }
 
 export async function POST(req: NextRequest) {
@@ -17,7 +30,7 @@ export async function POST(req: NextRequest) {
     // Haiku : rapide et ~0.3 cts par appel
     const msg = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 1200,
+      max_tokens: 2048,
       messages: [{
         role: "user",
         content: `Extrais les informations de ce CV en JSON. Retourne UNIQUEMENT le JSON, rien d'autre.
