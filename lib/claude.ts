@@ -152,7 +152,8 @@ Return ONLY a valid JSON object:
 
 Rules:
 - Use exact keywords from the offer, strong action verbs (Developed, Led, Increased...), quantify results. Write everything in ENGLISH. Return raw JSON only, no markdown code blocks.
-- "experience" and "formation": ONLY rewrite entries that already exist in the original CV. Do NOT add new ones. Rephrase descriptions to highlight what is most relevant to the job offer.
+- "experience": The output MUST contain the EXACT SAME number of entries as the original CV — no more, no less. Copy "poste", "entreprise" and "periode" verbatim from the original. ONLY rewrite "description" bullet points. The job offer title is the position the candidate is APPLYING FOR — it is NOT an experience to add.
+- "formation": Same rule — ONLY rewrite existing entries, copy "diplome", "etablissement", "annee" verbatim. Do NOT add new ones.
 - "competences": You MAY add skills from the offer, BUT only those that are realistic and coherent with the candidate's education level, existing experiences and overall profile. Do NOT add advanced or highly specialized skills that someone with this profile couldn't plausibly have.`
           : `Analyse ce CV et cette offre d'emploi, reformule le CV pour maximiser les chances de passer les filtres ATS.
 
@@ -193,7 +194,8 @@ Retourne UNIQUEMENT un objet JSON valide :
 
 Règles :
 - Utilise les mots-clés exacts de l'offre, verbes d'action forts, quantifie les résultats. Retourne du JSON brut, sans balises markdown.
-- "experience" et "formation" : reformule UNIQUEMENT les entrées déjà présentes dans le CV original. N'en invente pas de nouvelles. Réécris les descriptions pour mettre en avant ce qui est le plus pertinent pour le poste visé.
+- "experience" : le JSON de sortie doit contenir EXACTEMENT le même nombre d'entrées que le CV original — ni plus, ni moins. Copie "poste", "entreprise" et "periode" tels quels depuis le CV. Réécris UNIQUEMENT les "description". Le titre du poste dans l'offre est le poste que le candidat POSTULE — ce n'est PAS une expérience à ajouter.
+- "formation" : même règle — copie "diplome", "etablissement", "annee" tels quels. N'ajoute aucune nouvelle entrée.
 - "competences" : tu PEUX compléter avec des compétences de l'offre, MAIS seulement celles qui sont réalistes et cohérentes avec le niveau d'études, les expériences et le profil existant. N'ajoute pas de compétences avancées ou spécialisées que quelqu'un de ce profil ne pourrait pas avoir.`,
       },
     ],
