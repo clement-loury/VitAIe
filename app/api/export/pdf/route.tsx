@@ -531,31 +531,36 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
 function ATSProPDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | "en" }) {
   const t = L[langue];
 
+  // Limites strictes pour tenir sur 1 page
+  const resume     = data.resume ? data.resume.slice(0, 260) : "";
+  const competences = (data.competences ?? []).slice(0, 12);
+  const experiences = (data.experience  ?? []).slice(0, 4);
+  const formations  = (data.formation   ?? []).slice(0, 3);
+
   const s = StyleSheet.create({
-    page: { fontFamily: "Inter", backgroundColor: C.white, paddingTop: 36, paddingBottom: 36, paddingHorizontal: 48 },
-    name: { fontFamily: "Inter", fontWeight: 700, fontSize: 15, color: C.black, marginBottom: 2 },
-    titleLine: { fontFamily: "Inter", fontWeight: 400, fontSize: 9.5, color: "#333", marginBottom: 3 },
-    contactLine: { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: "#333", marginBottom: 12 },
-    sectionTitle: {
-      fontFamily: "Inter", fontWeight: 700, fontSize: 8.5,
-      color: C.black, textTransform: "uppercase", letterSpacing: 0.4,
-      marginBottom: 3, marginTop: 10,
-    },
-    divider: { height: 1.5, backgroundColor: C.black, marginBottom: 6 },
-    summaryText: { fontFamily: "Inter", fontWeight: 300, fontSize: 9, color: "#1a1a1a", lineHeight: 1.5 },
-    coreGrid: { flexDirection: "row", flexWrap: "wrap", marginBottom: 2 },
-    coreItem: { fontFamily: "Inter", fontWeight: 400, fontSize: 8.5, color: "#1a1a1a", marginRight: 16, marginBottom: 3 },
-    expBlock: { marginBottom: 7 },
-    expHeader: { flexDirection: "row", justifyContent: "space-between", marginBottom: 1 },
-    expPoste: { fontFamily: "Inter", fontWeight: 600, fontSize: 9, color: C.black },
-    expEntreprise: { fontFamily: "Inter", fontWeight: 400, fontSize: 8.5, color: "#333", fontStyle: "italic" },
-    expPeriode: { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#555" },
-    bullet: { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: "#1a1a1a", lineHeight: 1.4, marginLeft: 8, marginBottom: 1.5 },
-    formRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 4 },
-    formDiplome: { fontFamily: "Inter", fontWeight: 600, fontSize: 9, color: C.black },
-    formEcole: { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: "#333", marginTop: 1 },
-    formAnnee: { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#555" },
-    langText: { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: "#1a1a1a", lineHeight: 1.4 },
+    page:          { fontFamily: "Inter", backgroundColor: C.white, paddingTop: 28, paddingBottom: 28, paddingHorizontal: 38 },
+    name:          { fontFamily: "Inter", fontWeight: 700, fontSize: 14, color: C.black, marginBottom: 1 },
+    titleLine:     { fontFamily: "Inter", fontWeight: 400, fontSize: 9, color: "#333", marginBottom: 2 },
+    contactLine:   { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#555", marginBottom: 10 },
+    sectionTitle:  { fontFamily: "Inter", fontWeight: 700, fontSize: 8, color: C.black, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2, marginTop: 9 },
+    divider:       { height: 1, backgroundColor: C.black, marginBottom: 5 },
+    summaryText:   { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: "#1a1a1a", lineHeight: 1.45 },
+    coreGrid:      { flexDirection: "row", flexWrap: "wrap", marginBottom: 1 },
+    coreItem:      { fontFamily: "Inter", fontWeight: 400, fontSize: 8, color: "#1a1a1a", marginRight: 14, marginBottom: 2.5 },
+    expBlock:      { marginBottom: 6 },
+    expHeader:     { flexDirection: "row", justifyContent: "space-between", marginBottom: 1 },
+    expPoste:      { fontFamily: "Inter", fontWeight: 600, fontSize: 8.5, color: C.black },
+    expEntreprise: { fontFamily: "Inter", fontWeight: 400, fontSize: 8, color: "#333", fontStyle: "italic" },
+    expPeriode:    { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: "#555" },
+    bullet:        { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#1a1a1a", lineHeight: 1.35, marginLeft: 7, marginBottom: 1 },
+    // Formation + Langues côte à côte
+    bottomRow:     { flexDirection: "row", gap: 16 },
+    col:           { flex: 1 },
+    formRow:       { flexDirection: "row", justifyContent: "space-between", marginBottom: 3 },
+    formDiplome:   { fontFamily: "Inter", fontWeight: 600, fontSize: 8.5, color: C.black },
+    formEcole:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#333", marginTop: 0.5 },
+    formAnnee:     { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: "#555" },
+    langText:      { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#1a1a1a", lineHeight: 1.4 },
   });
 
   const contacts = [data.email, data.telephone, data.localisation, data.linkedin].filter(Boolean).join("  |  ");
@@ -563,35 +568,40 @@ function ATSProPDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | 
   return (
     <Document>
       <Page size="A4" style={s.page}>
-        <Text style={s.name}>{data.nom}</Text>
-        {data.titre ? <Text style={s.titleLine}>{data.titre}</Text> : null}
-        {contacts ? <Text style={s.contactLine}>{contacts}</Text> : null}
 
-        {data.resume ? (
+        {/* En-tête */}
+        <Text style={s.name}>{data.nom}</Text>
+        {data.titre   ? <Text style={s.titleLine}>{data.titre}</Text>     : null}
+        {contacts     ? <Text style={s.contactLine}>{contacts}</Text>     : null}
+
+        {/* Résumé — tronqué à 260 caractères */}
+        {resume ? (
           <View>
             <Text style={s.sectionTitle}>{t.professionalSummary}</Text>
             <View style={s.divider} />
-            <Text style={s.summaryText}>{data.resume}</Text>
+            <Text style={s.summaryText}>{resume}</Text>
           </View>
         ) : null}
 
-        {data.competences?.length > 0 && (
+        {/* Compétences clés — max 12 */}
+        {competences.length > 0 && (
           <View>
             <Text style={s.sectionTitle}>{t.coreCompetencies}</Text>
             <View style={s.divider} />
             <View style={s.coreGrid}>
-              {data.competences.map((c, i) => (
+              {competences.map((c, i) => (
                 <Text key={i} style={s.coreItem}>▪ {c}</Text>
               ))}
             </View>
           </View>
         )}
 
-        {data.experience?.length > 0 && (
+        {/* Expériences — max 4, max 3 bullets chacune */}
+        {experiences.length > 0 && (
           <View>
             <Text style={s.sectionTitle}>{t.workExperience}</Text>
             <View style={s.divider} />
-            {data.experience.map((exp, i) => (
+            {experiences.map((exp, i) => (
               <View key={i} wrap={false} style={s.expBlock}>
                 <View style={s.expHeader}>
                   <View>
@@ -600,7 +610,7 @@ function ATSProPDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | 
                   </View>
                   <Text style={s.expPeriode}>{exp.periode}</Text>
                 </View>
-                {(exp.description ?? []).map((d, j) => (
+                {(exp.description ?? []).slice(0, 3).map((d, j) => (
                   <Text key={j} style={s.bullet}>• {d}</Text>
                 ))}
               </View>
@@ -608,31 +618,35 @@ function ATSProPDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | 
           </View>
         )}
 
-        {data.formation?.length > 0 && (
-          <View>
-            <Text style={s.sectionTitle}>{t.education}</Text>
-            <View style={s.divider} />
-            {data.formation.map((f, i) => (
-              <View key={i} wrap={false} style={s.formRow}>
-                <View>
-                  <Text style={s.formDiplome}>{f.diplome}</Text>
-                  <Text style={s.formEcole}>{f.etablissement}{f.mention ? ` — ${f.mention}` : ""}</Text>
+        {/* Formation + Langues côte à côte pour économiser de la place */}
+        <View style={s.bottomRow}>
+          {formations.length > 0 && (
+            <View style={s.col}>
+              <Text style={s.sectionTitle}>{t.education}</Text>
+              <View style={s.divider} />
+              {formations.map((f, i) => (
+                <View key={i} wrap={false} style={s.formRow}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={s.formDiplome}>{f.diplome}</Text>
+                    <Text style={s.formEcole}>{f.etablissement}{f.mention ? ` — ${f.mention}` : ""}</Text>
+                  </View>
+                  <Text style={s.formAnnee}>{f.annee}</Text>
                 </View>
-                <Text style={s.formAnnee}>{f.annee}</Text>
-              </View>
-            ))}
-          </View>
-        )}
+              ))}
+            </View>
+          )}
 
-        {data.langues?.length ? (
-          <View>
-            <Text style={s.sectionTitle}>{t.languages}</Text>
-            <View style={s.divider} />
-            <Text style={s.langText}>
-              {data.langues.map((l) => `${l.langue} (${l.niveau})`).join("   •   ")}
-            </Text>
-          </View>
-        ) : null}
+          {data.langues?.length ? (
+            <View style={s.col}>
+              <Text style={s.sectionTitle}>{t.languages}</Text>
+              <View style={s.divider} />
+              <Text style={s.langText}>
+                {data.langues.map((l) => `${l.langue} (${l.niveau})`).join("\n")}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+
       </Page>
     </Document>
   );
