@@ -80,7 +80,7 @@ const L = {
 
 function SectionTitle({ label, light = false }: { label: string; light?: boolean }) {
   return (
-    <View style={{ marginTop: 18, marginBottom: 6 }}>
+    <View style={{ marginTop: 12, marginBottom: 4 }}>
       <Text style={{
         fontFamily: "Inter", fontWeight: 600, fontSize: 7.5,
         letterSpacing: 1.8, textTransform: "uppercase",
@@ -89,7 +89,7 @@ function SectionTitle({ label, light = false }: { label: string; light?: boolean
         {label}
       </Text>
       <View style={{
-        marginTop: 4, height: 0.75,
+        marginTop: 3, height: 0.75,
         backgroundColor: light ? "rgba(255,255,255,0.2)" : C.teal,
       }} />
     </View>
@@ -98,11 +98,11 @@ function SectionTitle({ label, light = false }: { label: string; light?: boolean
 
 function Bullet({ text, accent = C.teal }: { text: string; accent?: string }) {
   return (
-    <View style={{ flexDirection: "row", marginBottom: 3, paddingRight: 4 }}>
-      <Text style={{ fontSize: 8, color: accent, marginRight: 5, marginTop: 1.5, lineHeight: 1 }}>▸</Text>
+    <View style={{ flexDirection: "row", marginBottom: 2.5, paddingRight: 4 }}>
+      <Text style={{ fontSize: 8, color: accent, marginRight: 5, marginTop: 1, lineHeight: 1 }}>▸</Text>
       <Text style={{
-        fontFamily: "Inter", fontWeight: 300, fontSize: 8.5,
-        color: C.body, lineHeight: 1.5, flex: 1,
+        fontFamily: "Inter", fontWeight: 300, fontSize: 8,
+        color: C.body, lineHeight: 1.45, flex: 1,
       }}>
         {text}
       </Text>
@@ -116,70 +116,49 @@ function Bullet({ text, accent = C.teal }: { text: string; accent?: string }) {
 function ModernePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | "en" }) {
   const t = L[langue];
   const initial = (data.nom ?? "?").charAt(0).toUpperCase();
+  const experiences  = (data.experience  ?? []).slice(0, 4);
+  const formations   = (data.formation   ?? []).slice(0, 3);
+  const competences  = (data.competences ?? []).slice(0, 9);
 
   const sidebar = StyleSheet.create({
     col: {
       width: "33%", backgroundColor: C.violet,
-      paddingTop: 36, paddingBottom: 36, paddingLeft: 20, paddingRight: 18,
+      paddingTop: 28, paddingBottom: 28, paddingLeft: 16, paddingRight: 14,
       minHeight: "100%",
     },
     avatarRing: {
-      width: 70, height: 70, borderRadius: 35,
+      width: 58, height: 58, borderRadius: 29,
       backgroundColor: C.violetDark,
-      borderWidth: 2.5, borderColor: C.teal,
+      borderWidth: 2, borderColor: C.teal,
       alignItems: "center", justifyContent: "center",
-      alignSelf: "center", marginBottom: 16,
+      alignSelf: "center", marginBottom: 12,
     },
-    avatarLetter: { fontFamily: "Inter", fontWeight: 700, fontSize: 28, color: C.white },
-    contactText: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 8,
-      color: "rgba(255,255,255,0.85)", lineHeight: 1.5, marginBottom: 2,
-    },
-    skillRow: { marginBottom: 7 },
-    skillName: { fontFamily: "Inter", fontWeight: 400, fontSize: 8, color: "rgba(255,255,255,0.9)", marginBottom: 2 },
-    skillTrack: { height: 3, backgroundColor: "rgba(255,255,255,0.18)", borderRadius: 2 },
-    skillFill: { height: 3, backgroundColor: C.teal, borderRadius: 2 },
-    langRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 4 },
-    langName: { fontFamily: "Inter", fontWeight: 400, fontSize: 8, color: "rgba(255,255,255,0.85)" },
-    langLevel: { fontFamily: "Inter", fontWeight: 500, fontSize: 7.5, color: C.teal },
+    avatarLetter: { fontFamily: "Inter", fontWeight: 700, fontSize: 24, color: C.white },
+    contactText: { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: "rgba(255,255,255,0.85)", lineHeight: 1.5, marginBottom: 2 },
+    skillRow: { marginBottom: 5 },
+    skillName: { fontFamily: "Inter", fontWeight: 400, fontSize: 7.5, color: "rgba(255,255,255,0.9)", marginBottom: 2 },
+    skillTrack: { height: 2.5, backgroundColor: "rgba(255,255,255,0.18)", borderRadius: 2 },
+    skillFill: { height: 2.5, backgroundColor: C.teal, borderRadius: 2 },
+    langRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 3.5 },
+    langName: { fontFamily: "Inter", fontWeight: 400, fontSize: 7.5, color: "rgba(255,255,255,0.85)" },
+    langLevel: { fontFamily: "Inter", fontWeight: 500, fontSize: 7, color: C.teal },
   });
 
   const main = StyleSheet.create({
-    col: { width: "67%", paddingTop: 36, paddingBottom: 36, paddingLeft: 26, paddingRight: 30 },
-    name: {
-      fontFamily: "Inter", fontWeight: 700, fontSize: 22,
-      color: C.dark, letterSpacing: 0.3, lineHeight: 1.15, marginBottom: 4,
-    },
-    title: {
-      fontFamily: "Inter", fontWeight: 500, fontSize: 10.5,
-      color: C.teal, letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 12,
-    },
-    resume: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 8.5,
-      color: C.muted, lineHeight: 1.6, marginBottom: 4,
-    },
-    headerBar: { height: 2, backgroundColor: C.border, marginBottom: 14 },
-    expBlock: {
-      marginBottom: 12, paddingLeft: 10,
-      borderLeftWidth: 2, borderLeftColor: C.border,
-    },
-    expPoste: {
-      fontFamily: "Inter", fontWeight: 600, fontSize: 9.5,
-      color: C.dark, lineHeight: 1.3,
-    },
-    expEntreprise: {
-      fontFamily: "Inter", fontWeight: 500, fontSize: 9,
-      color: C.teal, marginTop: 1, marginBottom: 4,
-    },
-    expPeriode: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 8,
-      color: C.light, letterSpacing: 0.2,
-    },
+    col: { width: "67%", paddingTop: 28, paddingBottom: 28, paddingLeft: 22, paddingRight: 24, flexGrow: 1 },
+    name: { fontFamily: "Inter", fontWeight: 700, fontSize: 19, color: C.dark, letterSpacing: 0.3, lineHeight: 1.15, marginBottom: 3 },
+    title: { fontFamily: "Inter", fontWeight: 500, fontSize: 9.5, color: C.teal, letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 10 },
+    resume: { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.muted, lineHeight: 1.55, marginBottom: 4 },
+    headerBar: { height: 1.5, backgroundColor: C.border, marginBottom: 10 },
+    expBlock: { marginBottom: 9, paddingLeft: 9, borderLeftWidth: 1.5, borderLeftColor: C.border },
+    expPoste: { fontFamily: "Inter", fontWeight: 600, fontSize: 9, color: C.dark, lineHeight: 1.3 },
+    expEntreprise: { fontFamily: "Inter", fontWeight: 500, fontSize: 8.5, color: C.teal, marginTop: 1, marginBottom: 3 },
+    expPeriode: { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: C.light, letterSpacing: 0.2 },
     expHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 2 },
-    formRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 7 },
-    formDiplome: { fontFamily: "Inter", fontWeight: 600, fontSize: 9.5, color: C.dark },
-    formEcole: { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.muted, marginTop: 1 },
-    formAnnee: { fontFamily: "Inter", fontWeight: 400, fontSize: 8, color: C.light },
+    formRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 6 },
+    formDiplome: { fontFamily: "Inter", fontWeight: 600, fontSize: 9, color: C.dark },
+    formEcole: { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.muted, marginTop: 1 },
+    formAnnee: { fontFamily: "Inter", fontWeight: 400, fontSize: 7.5, color: C.light },
   });
 
   return (
@@ -192,15 +171,15 @@ function ModernePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" |
           </View>
 
           <SectionTitle label={t.contact} light />
-          {data.email     && <Text style={sidebar.contactText}>{data.email}</Text>}
-          {data.telephone && <Text style={sidebar.contactText}>{data.telephone}</Text>}
+          {data.email        && <Text style={sidebar.contactText}>{data.email}</Text>}
+          {data.telephone    && <Text style={sidebar.contactText}>{data.telephone}</Text>}
           {data.localisation && <Text style={sidebar.contactText}>{data.localisation}</Text>}
-          {data.linkedin  && <Text style={sidebar.contactText}>{data.linkedin}</Text>}
+          {data.linkedin     && <Text style={sidebar.contactText}>{data.linkedin}</Text>}
 
-          {data.competences?.length > 0 && (
+          {competences.length > 0 && (
             <View>
               <SectionTitle label={t.competences} light />
-              {data.competences.slice(0, 10).map((c, i) => (
+              {competences.map((c, i) => (
                 <View key={i} style={sidebar.skillRow}>
                   <Text style={sidebar.skillName}>{c}</Text>
                   <View style={sidebar.skillTrack}>
@@ -229,12 +208,12 @@ function ModernePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" |
           <Text style={main.name}>{data.nom}</Text>
           <Text style={main.title}>{data.titre}</Text>
           <View style={main.headerBar} />
-          {data.resume ? <Text style={main.resume}>{data.resume}</Text> : null}
+          {data.resume ? <Text style={main.resume}>{data.resume.slice(0, 300)}</Text> : null}
 
-          {data.experience?.length > 0 && (
+          {experiences.length > 0 && (
             <View>
               <SectionTitle label={t.experience} />
-              {data.experience.map((exp, i) => (
+              {experiences.map((exp, i) => (
                 <View key={i} wrap={false} style={main.expBlock}>
                   <View style={main.expHeader}>
                     <View style={{ flex: 1 }}>
@@ -243,16 +222,16 @@ function ModernePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" |
                     </View>
                     <Text style={main.expPeriode}>{exp.periode}</Text>
                   </View>
-                  {(exp.description ?? []).map((d, j) => <Bullet key={j} text={d} />)}
+                  {(exp.description ?? []).slice(0, 3).map((d, j) => <Bullet key={j} text={d} />)}
                 </View>
               ))}
             </View>
           )}
 
-          {data.formation?.length > 0 && (
+          {formations.length > 0 && (
             <View>
               <SectionTitle label={t.formation} />
-              {data.formation.map((f, i) => (
+              {formations.map((f, i) => (
                 <View key={i} wrap={false} style={main.formRow}>
                   <View style={{ flex: 1 }}>
                     <Text style={main.formDiplome}>{f.diplome}</Text>
@@ -274,55 +253,35 @@ function ModernePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" |
 
 function ClassiquePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | "en" }) {
   const t = L[langue];
+  const experiences = (data.experience  ?? []).slice(0, 4);
+  const formations  = (data.formation   ?? []).slice(0, 3);
+  const competences = (data.competences ?? []).slice(0, 14);
 
   const s = StyleSheet.create({
-    page: { fontFamily: "Inter", backgroundColor: C.white },
-    headerBand: {
-      backgroundColor: C.violet, paddingTop: 28, paddingBottom: 24,
-      paddingHorizontal: 40,
-    },
-    accentLine: { height: 3, backgroundColor: C.teal },
-    name: {
-      fontFamily: "Inter", fontWeight: 700, fontSize: 24,
-      color: C.white, letterSpacing: 0.5, lineHeight: 1.2,
-    },
-    titleHeader: {
-      fontFamily: "Inter", fontWeight: 400, fontSize: 10.5,
-      color: "rgba(255,255,255,0.75)", letterSpacing: 1.5,
-      textTransform: "uppercase", marginTop: 5,
-    },
-    contacts: {
-      flexDirection: "row", flexWrap: "wrap", gap: 14, marginTop: 10,
-    },
-    contactItem: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 8,
-      color: "rgba(255,255,255,0.7)",
-    },
-    body: { paddingHorizontal: 40, paddingVertical: 24 },
-    resume: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 9,
-      color: C.muted, lineHeight: 1.65, marginBottom: 4,
-      borderLeftWidth: 2, borderLeftColor: C.teal,
-      paddingLeft: 10,
-    },
-    expBlock: { marginBottom: 13 },
-    expHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", marginBottom: 2 },
-    expPoste: { fontFamily: "Inter", fontWeight: 600, fontSize: 10, color: C.dark },
-    expEntreprise: { fontFamily: "Inter", fontWeight: 500, fontSize: 9, color: C.teal },
-    expSeparator: { fontFamily: "Inter", fontSize: 9, color: C.light },
-    expPeriode: { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.light, letterSpacing: 0.2 },
-    formRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", marginBottom: 7 },
-    formDiplome: { fontFamily: "Inter", fontWeight: 600, fontSize: 10, color: C.dark },
-    formEcole: { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.muted },
-    formAnnee: { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.light },
-    competencesText: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 9,
-      color: C.body, lineHeight: 1.7,
-    },
-    langText: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 9,
-      color: C.body, lineHeight: 1.7,
-    },
+    page:           { fontFamily: "Inter", backgroundColor: C.white },
+    headerBand:     { backgroundColor: C.violet, paddingTop: 20, paddingBottom: 16, paddingHorizontal: 36 },
+    accentLine:     { height: 2.5, backgroundColor: C.teal },
+    name:           { fontFamily: "Inter", fontWeight: 700, fontSize: 20, color: C.white, letterSpacing: 0.5, lineHeight: 1.2 },
+    titleHeader:    { fontFamily: "Inter", fontWeight: 400, fontSize: 9.5, color: "rgba(255,255,255,0.75)", letterSpacing: 1.5, textTransform: "uppercase", marginTop: 4 },
+    contacts:       { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 8 },
+    contactItem:    { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: "rgba(255,255,255,0.7)" },
+    body:           { paddingHorizontal: 36, paddingTop: 16, paddingBottom: 16, flexGrow: 1 },
+    resume:         { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.muted, lineHeight: 1.55, marginBottom: 4, borderLeftWidth: 2, borderLeftColor: C.teal, paddingLeft: 9 },
+    expBlock:       { marginBottom: 9 },
+    expHeader:      { flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", marginBottom: 2 },
+    expPoste:       { fontFamily: "Inter", fontWeight: 600, fontSize: 9.5, color: C.dark },
+    expEntreprise:  { fontFamily: "Inter", fontWeight: 500, fontSize: 8.5, color: C.teal },
+    expSeparator:   { fontFamily: "Inter", fontSize: 8.5, color: C.light },
+    expPeriode:     { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: C.light, letterSpacing: 0.2 },
+    bottomRow:      { flexDirection: "row", gap: 20, marginTop: 2 },
+    formCol:        { flex: 1 },
+    formRow:        { flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 },
+    formDiplome:    { fontFamily: "Inter", fontWeight: 600, fontSize: 9.5, color: C.dark },
+    formEcole:      { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.muted },
+    formAnnee:      { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: C.light },
+    rightCol:       { width: 170 },
+    competencesText:{ fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.body, lineHeight: 1.6 },
+    langText:       { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.body, lineHeight: 1.6 },
   });
 
   const contacts = [data.email, data.telephone, data.localisation, data.linkedin].filter(Boolean);
@@ -330,71 +289,73 @@ function ClassiquePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr"
   return (
     <Document>
       <Page size="A4" style={s.page}>
-        {/* HEADER BAND */}
+        {/* HEADER */}
         <View style={s.headerBand}>
           <Text style={s.name}>{data.nom}</Text>
           <Text style={s.titleHeader}>{data.titre}</Text>
           <View style={s.contacts}>
-            {contacts.map((c, i) => (
-              <Text key={i} style={s.contactItem}>{c}</Text>
-            ))}
+            {contacts.map((c, i) => <Text key={i} style={s.contactItem}>{c}</Text>)}
           </View>
         </View>
         <View style={s.accentLine} />
 
         {/* BODY */}
         <View style={s.body}>
-          {data.resume ? <Text style={s.resume}>{data.resume}</Text> : null}
+          {data.resume ? <Text style={s.resume}>{data.resume.slice(0, 300)}</Text> : null}
 
-          {data.experience?.length > 0 && (
+          {experiences.length > 0 && (
             <View>
               <SectionTitle label={t.experience} />
-              {data.experience.map((exp, i) => (
+              {experiences.map((exp, i) => (
                 <View key={i} wrap={false} style={s.expBlock}>
                   <View style={s.expHeader}>
-                    <View style={{ flexDirection: "row", alignItems: "baseline", gap: 6, flex: 1 }}>
+                    <View style={{ flexDirection: "row", alignItems: "baseline", gap: 6, flex: 1, flexWrap: "wrap" }}>
                       <Text style={s.expPoste}>{exp.poste}</Text>
                       <Text style={s.expSeparator}>·</Text>
                       <Text style={s.expEntreprise}>{exp.entreprise}</Text>
                     </View>
                     <Text style={s.expPeriode}>{exp.periode}</Text>
                   </View>
-                  {(exp.description ?? []).map((d, j) => <Bullet key={j} text={d} accent={C.violet} />)}
+                  {(exp.description ?? []).slice(0, 3).map((d, j) => <Bullet key={j} text={d} accent={C.violet} />)}
                 </View>
               ))}
             </View>
           )}
 
-          {data.formation?.length > 0 && (
-            <View>
-              <SectionTitle label={t.formation} />
-              {data.formation.map((f, i) => (
-                <View key={i} wrap={false} style={s.formRow}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={s.formDiplome}>{f.diplome}</Text>
-                    <Text style={s.formEcole}>{f.etablissement}{f.mention ? ` · ${f.mention}` : ""}</Text>
+          {/* Formation + Compétences + Langues côte à côte */}
+          <View style={s.bottomRow}>
+            {formations.length > 0 && (
+              <View style={s.formCol}>
+                <SectionTitle label={t.formation} />
+                {formations.map((f, i) => (
+                  <View key={i} wrap={false} style={s.formRow}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={s.formDiplome}>{f.diplome}</Text>
+                      <Text style={s.formEcole}>{f.etablissement}{f.mention ? ` · ${f.mention}` : ""}</Text>
+                    </View>
+                    <Text style={s.formAnnee}>{f.annee}</Text>
                   </View>
-                  <Text style={s.formAnnee}>{f.annee}</Text>
+                ))}
+              </View>
+            )}
+
+            <View style={s.rightCol}>
+              {competences.length > 0 && (
+                <View>
+                  <SectionTitle label={t.competences} />
+                  <Text style={s.competencesText}>{competences.join("  ·  ")}</Text>
                 </View>
-              ))}
+              )}
+              {data.langues?.length ? (
+                <View>
+                  <SectionTitle label={t.langues} />
+                  <Text style={s.langText}>
+                    {data.langues.map((l) => `${l.langue} (${l.niveau})`).join("\n")}
+                  </Text>
+                </View>
+              ) : null}
             </View>
-          )}
-
-          {data.competences?.length > 0 && (
-            <View>
-              <SectionTitle label={t.competences} />
-              <Text style={s.competencesText}>{data.competences.join("   ·   ")}</Text>
-            </View>
-          )}
-
-          {data.langues?.length ? (
-            <View>
-              <SectionTitle label={t.langues} />
-              <Text style={s.langText}>
-                {data.langues.map((l) => `${l.langue}  (${l.niveau})`).join("   ·   ")}
-              </Text>
-            </View>
-          ) : null}
+          </View>
         </View>
       </Page>
     </Document>
@@ -406,44 +367,32 @@ function ClassiquePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr"
 
 function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | "en" }) {
   const t = L[langue];
+  const experiences = (data.experience  ?? []).slice(0, 4);
+  const formations  = (data.formation   ?? []).slice(0, 3);
+  const competences = (data.competences ?? []).slice(0, 14);
 
   const s = StyleSheet.create({
-    page: { fontFamily: "Inter", backgroundColor: C.white, padding: 52 },
-    name: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 30,
-      color: C.dark, letterSpacing: -0.5, lineHeight: 1.1, marginBottom: 5,
-    },
-    title: { fontFamily: "Inter", fontWeight: 400, fontSize: 11, color: C.muted, marginBottom: 8 },
-    contacts: { flexDirection: "row", gap: 20, marginBottom: 28 },
-    contactItem: { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.light },
-    divider: { height: 1, backgroundColor: C.border, marginBottom: 22 },
-    resume: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 9,
-      color: C.muted, lineHeight: 1.7, marginBottom: 26, maxWidth: 430,
-    },
-    sectionLabel: {
-      fontFamily: "Inter", fontWeight: 600, fontSize: 7,
-      letterSpacing: 2.5, textTransform: "uppercase",
-      color: C.light, marginBottom: 14,
-    },
-    gridRow: { flexDirection: "row", gap: 18, marginBottom: 16 },
-    colLeft: {
-      width: 100, fontFamily: "Inter", fontWeight: 300,
-      fontSize: 8, color: C.light, paddingTop: 1.5, lineHeight: 1.5,
-    },
-    colRight: { flex: 1 },
-    expPoste: { fontFamily: "Inter", fontWeight: 600, fontSize: 10, color: C.dark, lineHeight: 1.3 },
-    expEntreprise: { fontFamily: "Inter", fontWeight: 400, fontSize: 9, color: C.muted, marginTop: 1, marginBottom: 5 },
-    formDiplome: { fontFamily: "Inter", fontWeight: 600, fontSize: 10, color: C.dark },
-    formEcole: { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.muted, marginTop: 2 },
-    skillsRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-    skillItem: { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.body },
-    dash: { fontFamily: "Inter", fontSize: 8.5, color: C.border },
-    bottomRow: { flexDirection: "row", gap: 40, marginTop: 4 },
-    langItem: {
-      fontFamily: "Inter", fontWeight: 300, fontSize: 8.5,
-      color: C.body, lineHeight: 1.7,
-    },
+    page:          { fontFamily: "Inter", backgroundColor: C.white, paddingHorizontal: 40, paddingTop: 36, paddingBottom: 28 },
+    name:          { fontFamily: "Inter", fontWeight: 300, fontSize: 24, color: C.dark, letterSpacing: -0.5, lineHeight: 1.1, marginBottom: 3 },
+    title:         { fontFamily: "Inter", fontWeight: 400, fontSize: 10, color: C.muted, marginBottom: 6 },
+    contacts:      { flexDirection: "row", flexWrap: "wrap", gap: 16, marginBottom: 14 },
+    contactItem:   { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: C.light },
+    divider:       { height: 1, backgroundColor: C.border, marginBottom: 14 },
+    resume:        { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.muted, lineHeight: 1.6, marginBottom: 14, maxWidth: 430 },
+    sectionLabel:  { fontFamily: "Inter", fontWeight: 600, fontSize: 6.5, letterSpacing: 2.5, textTransform: "uppercase", color: C.light, marginBottom: 8 },
+    gridRow:       { flexDirection: "row", gap: 16, marginBottom: 10 },
+    colLeft:       { width: 88, fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: C.light, paddingTop: 1.5, lineHeight: 1.5 },
+    colRight:      { flex: 1 },
+    expPoste:      { fontFamily: "Inter", fontWeight: 600, fontSize: 9.5, color: C.dark, lineHeight: 1.3 },
+    expEntreprise: { fontFamily: "Inter", fontWeight: 400, fontSize: 8.5, color: C.muted, marginTop: 1, marginBottom: 4 },
+    expBullet:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.body, lineHeight: 1.45 },
+    formDiplome:   { fontFamily: "Inter", fontWeight: 600, fontSize: 9.5, color: C.dark },
+    formEcole:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.muted, marginTop: 1.5 },
+    skillsRow:     { flexDirection: "row", flexWrap: "wrap", gap: 6 },
+    skillItem:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.body },
+    dash:          { fontFamily: "Inter", fontSize: 8, color: C.border },
+    bottomRow:     { flexDirection: "row", gap: 30, marginTop: 2 },
+    langItem:      { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.body, lineHeight: 1.6 },
   });
 
   return (
@@ -458,19 +407,19 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
         </View>
         <View style={s.divider} />
 
-        {data.resume ? <Text style={s.resume}>{data.resume}</Text> : null}
+        {data.resume ? <Text style={s.resume}>{data.resume.slice(0, 280)}</Text> : null}
 
-        {data.experience?.length > 0 && (
-          <View style={{ marginBottom: 24 }}>
+        {experiences.length > 0 && (
+          <View style={{ marginBottom: 14 }}>
             <Text style={s.sectionLabel}>{t.experience}</Text>
-            {data.experience.map((exp, i) => (
+            {experiences.map((exp, i) => (
               <View key={i} wrap={false} style={s.gridRow}>
                 <Text style={s.colLeft}>{exp.periode}</Text>
                 <View style={s.colRight}>
                   <Text style={s.expPoste}>{exp.poste}</Text>
                   <Text style={s.expEntreprise}>{exp.entreprise}</Text>
-                  {(exp.description ?? []).map((d, j) => (
-                    <Text key={j} style={{ fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.body, lineHeight: 1.5 }}>— {d}</Text>
+                  {(exp.description ?? []).slice(0, 3).map((d, j) => (
+                    <Text key={j} style={s.expBullet}>— {d}</Text>
                   ))}
                 </View>
               </View>
@@ -478,10 +427,10 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
           </View>
         )}
 
-        {data.formation?.length > 0 && (
-          <View style={{ marginBottom: 24 }}>
+        {formations.length > 0 && (
+          <View style={{ marginBottom: 14 }}>
             <Text style={s.sectionLabel}>{t.formation}</Text>
-            {data.formation.map((f, i) => (
+            {formations.map((f, i) => (
               <View key={i} wrap={false} style={s.gridRow}>
                 <Text style={s.colLeft}>{f.annee}</Text>
                 <View style={s.colRight}>
@@ -495,12 +444,12 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
 
         <View style={s.divider} />
         <View style={s.bottomRow}>
-          {data.competences?.length > 0 && (
+          {competences.length > 0 && (
             <View style={{ flex: 1 }}>
               <Text style={s.sectionLabel}>{t.competences}</Text>
               <View style={s.skillsRow}>
-                {data.competences.map((c, i) => (
-                  <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                {competences.map((c, i) => (
+                  <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                     {i > 0 && <Text style={s.dash}>·</Text>}
                     <Text style={s.skillItem}>{c}</Text>
                   </View>
@@ -509,12 +458,11 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
             </View>
           )}
           {data.langues?.length ? (
-            <View style={{ width: 150 }}>
+            <View style={{ width: 130 }}>
               <Text style={s.sectionLabel}>{t.langues}</Text>
               {data.langues.map((l, i) => (
                 <Text key={i} style={s.langItem}>
-                  {l.langue}{" "}
-                  <Text style={{ color: C.light }}>({l.niveau})</Text>
+                  {l.langue} <Text style={{ color: C.light }}>({l.niveau})</Text>
                 </Text>
               ))}
             </View>
