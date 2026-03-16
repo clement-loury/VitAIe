@@ -367,7 +367,8 @@ function ClassiquePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr"
 
 function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | "en" }) {
   const t = L[langue];
-  const experiences = (data.experience  ?? []).slice(0, 4);
+  // Limites strictes : bullets tronquées à 100 chars pour éviter le wrap multi-lignes
+  const experiences = (data.experience  ?? []).slice(0, 3);
   const formations  = (data.formation   ?? []).slice(0, 3);
   const competences = (data.competences ?? []).slice(0, 14);
 
@@ -375,17 +376,17 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
     page:          { fontFamily: "Inter", backgroundColor: C.white, paddingHorizontal: 40, paddingTop: 36, paddingBottom: 28 },
     name:          { fontFamily: "Inter", fontWeight: 300, fontSize: 24, color: C.dark, letterSpacing: -0.5, lineHeight: 1.1, marginBottom: 3 },
     title:         { fontFamily: "Inter", fontWeight: 400, fontSize: 10, color: C.muted, marginBottom: 6 },
-    contacts:      { flexDirection: "row", flexWrap: "wrap", gap: 16, marginBottom: 14 },
+    contacts:      { flexDirection: "row", flexWrap: "wrap", gap: 16, marginBottom: 12 },
     contactItem:   { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: C.light },
-    divider:       { height: 1, backgroundColor: C.border, marginBottom: 14 },
-    resume:        { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.muted, lineHeight: 1.6, marginBottom: 14, maxWidth: 430 },
-    sectionLabel:  { fontFamily: "Inter", fontWeight: 600, fontSize: 6.5, letterSpacing: 2.5, textTransform: "uppercase", color: C.light, marginBottom: 8 },
-    gridRow:       { flexDirection: "row", gap: 16, marginBottom: 10 },
+    divider:       { height: 1, backgroundColor: C.border, marginBottom: 12 },
+    resume:        { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: C.muted, lineHeight: 1.55, marginBottom: 12, maxWidth: 430 },
+    sectionLabel:  { fontFamily: "Inter", fontWeight: 600, fontSize: 6.5, letterSpacing: 2.5, textTransform: "uppercase", color: C.light, marginBottom: 7 },
+    gridRow:       { flexDirection: "row", gap: 16, marginBottom: 8 },
     colLeft:       { width: 88, fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: C.light, paddingTop: 1.5, lineHeight: 1.5 },
     colRight:      { flex: 1 },
     expPoste:      { fontFamily: "Inter", fontWeight: 600, fontSize: 9.5, color: C.dark, lineHeight: 1.3 },
-    expEntreprise: { fontFamily: "Inter", fontWeight: 400, fontSize: 8.5, color: C.muted, marginTop: 1, marginBottom: 4 },
-    expBullet:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.body, lineHeight: 1.45 },
+    expEntreprise: { fontFamily: "Inter", fontWeight: 400, fontSize: 8.5, color: C.muted, marginTop: 1, marginBottom: 3 },
+    expBullet:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.body, lineHeight: 1.4 },
     formDiplome:   { fontFamily: "Inter", fontWeight: 600, fontSize: 9.5, color: C.dark },
     formEcole:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: C.muted, marginTop: 1.5 },
     skillsRow:     { flexDirection: "row", flexWrap: "wrap", gap: 6 },
@@ -407,10 +408,10 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
         </View>
         <View style={s.divider} />
 
-        {data.resume ? <Text style={s.resume}>{data.resume.slice(0, 280)}</Text> : null}
+        {data.resume ? <Text style={s.resume}>{data.resume.slice(0, 260)}</Text> : null}
 
         {experiences.length > 0 && (
-          <View style={{ marginBottom: 14 }}>
+          <View style={{ marginBottom: 10 }}>
             <Text style={s.sectionLabel}>{t.experience}</Text>
             {experiences.map((exp, i) => (
               <View key={i} wrap={false} style={s.gridRow}>
@@ -418,8 +419,8 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
                 <View style={s.colRight}>
                   <Text style={s.expPoste}>{exp.poste}</Text>
                   <Text style={s.expEntreprise}>{exp.entreprise}</Text>
-                  {(exp.description ?? []).slice(0, 3).map((d, j) => (
-                    <Text key={j} style={s.expBullet}>— {d}</Text>
+                  {(exp.description ?? []).slice(0, 2).map((d, j) => (
+                    <Text key={j} style={s.expBullet}>— {d.slice(0, 100)}</Text>
                   ))}
                 </View>
               </View>
@@ -428,7 +429,7 @@ function MinimalistePDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "f
         )}
 
         {formations.length > 0 && (
-          <View style={{ marginBottom: 14 }}>
+          <View style={{ marginBottom: 10 }}>
             <Text style={s.sectionLabel}>{t.formation}</Text>
             {formations.map((f, i) => (
               <View key={i} wrap={false} style={s.gridRow}>
@@ -486,29 +487,29 @@ function ATSProPDF({ data, langue = "fr" }: { data: CVOptimise; langue?: "fr" | 
   const formations  = (data.formation   ?? []).slice(0, 3);
 
   const s = StyleSheet.create({
-    page:          { fontFamily: "Inter", backgroundColor: C.white, paddingTop: 28, paddingBottom: 28, paddingHorizontal: 38 },
-    name:          { fontFamily: "Inter", fontWeight: 700, fontSize: 14, color: C.black, marginBottom: 1 },
-    titleLine:     { fontFamily: "Inter", fontWeight: 400, fontSize: 9, color: "#333", marginBottom: 2 },
-    contactLine:   { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#555", marginBottom: 10 },
-    sectionTitle:  { fontFamily: "Inter", fontWeight: 700, fontSize: 8, color: C.black, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2, marginTop: 9 },
-    divider:       { height: 1, backgroundColor: C.black, marginBottom: 5 },
-    summaryText:   { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: "#1a1a1a", lineHeight: 1.45 },
-    coreGrid:      { flexDirection: "row", flexWrap: "wrap", marginBottom: 1 },
-    coreItem:      { fontFamily: "Inter", fontWeight: 400, fontSize: 8, color: "#1a1a1a", marginRight: 14, marginBottom: 2.5 },
-    expBlock:      { marginBottom: 6 },
-    expHeader:     { flexDirection: "row", justifyContent: "space-between", marginBottom: 1 },
-    expPoste:      { fontFamily: "Inter", fontWeight: 600, fontSize: 8.5, color: C.black },
-    expEntreprise: { fontFamily: "Inter", fontWeight: 400, fontSize: 8, color: "#333", fontStyle: "italic" },
-    expPeriode:    { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: "#555" },
-    bullet:        { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#1a1a1a", lineHeight: 1.35, marginLeft: 7, marginBottom: 1 },
+    page:          { fontFamily: "Inter", backgroundColor: C.white, paddingTop: 42, paddingBottom: 42, paddingHorizontal: 52 },
+    name:          { fontFamily: "Inter", fontWeight: 700, fontSize: 18, color: C.black, marginBottom: 2 },
+    titleLine:     { fontFamily: "Inter", fontWeight: 400, fontSize: 10.5, color: "#333", marginBottom: 3 },
+    contactLine:   { fontFamily: "Inter", fontWeight: 300, fontSize: 9, color: "#555", marginBottom: 16 },
+    sectionTitle:  { fontFamily: "Inter", fontWeight: 700, fontSize: 9, color: C.black, textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 3, marginTop: 16 },
+    divider:       { height: 1.5, backgroundColor: C.black, marginBottom: 8 },
+    summaryText:   { fontFamily: "Inter", fontWeight: 300, fontSize: 9.5, color: "#1a1a1a", lineHeight: 1.6 },
+    coreGrid:      { flexDirection: "row", flexWrap: "wrap", marginBottom: 2 },
+    coreItem:      { fontFamily: "Inter", fontWeight: 400, fontSize: 9, color: "#1a1a1a", marginRight: 18, marginBottom: 5 },
+    expBlock:      { marginBottom: 12 },
+    expHeader:     { flexDirection: "row", justifyContent: "space-between", marginBottom: 2 },
+    expPoste:      { fontFamily: "Inter", fontWeight: 600, fontSize: 10, color: C.black },
+    expEntreprise: { fontFamily: "Inter", fontWeight: 400, fontSize: 9, color: "#333", fontStyle: "italic" },
+    expPeriode:    { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: "#555" },
+    bullet:        { fontFamily: "Inter", fontWeight: 300, fontSize: 9, color: "#1a1a1a", lineHeight: 1.55, marginLeft: 10, marginBottom: 3 },
     // Formation + Langues côte à côte
-    bottomRow:     { flexDirection: "row", gap: 16 },
+    bottomRow:     { flexDirection: "row", gap: 20 },
     col:           { flex: 1 },
-    formRow:       { flexDirection: "row", justifyContent: "space-between", marginBottom: 3 },
-    formDiplome:   { fontFamily: "Inter", fontWeight: 600, fontSize: 8.5, color: C.black },
-    formEcole:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#333", marginTop: 0.5 },
-    formAnnee:     { fontFamily: "Inter", fontWeight: 300, fontSize: 7.5, color: "#555" },
-    langText:      { fontFamily: "Inter", fontWeight: 300, fontSize: 8, color: "#1a1a1a", lineHeight: 1.4 },
+    formRow:       { flexDirection: "row", justifyContent: "space-between", marginBottom: 6 },
+    formDiplome:   { fontFamily: "Inter", fontWeight: 600, fontSize: 10, color: C.black },
+    formEcole:     { fontFamily: "Inter", fontWeight: 300, fontSize: 9, color: "#333", marginTop: 1 },
+    formAnnee:     { fontFamily: "Inter", fontWeight: 300, fontSize: 8.5, color: "#555" },
+    langText:      { fontFamily: "Inter", fontWeight: 300, fontSize: 9, color: "#1a1a1a", lineHeight: 1.6 },
   });
 
   const contacts = [data.email, data.telephone, data.localisation, data.linkedin].filter(Boolean).join("  |  ");
